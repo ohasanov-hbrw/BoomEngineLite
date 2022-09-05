@@ -8,50 +8,44 @@
 
 void GetScale(){
     //Get the scale and also get the current offset for the zero point of the game area
-    Global.Scale = std::min(GetScreenWidth()/640.0f, GetScreenHeight()/480.0f);
-    Global.ZeroPoint = {GetScreenWidth() / 2.0f - (Global.Scale * 320.0f), GetScreenHeight() / 2.0f - (Global.Scale * 240.0f)};
+    G.Scale = std::min(GetScreenWidth()/640.0f, GetScreenHeight()/480.0f);
+    G.ZeroPoint = {GetScreenWidth() / 2.0f - (G.Scale * 320.0f), GetScreenHeight() / 2.0f - (G.Scale * 240.0f)};
 }
 
 void GetMouse(){
     //Get the mouse position and also check if it is in the game area
-    Global.MouseInFocus = CheckCollisionPointRec(GetMousePosition(), (Rectangle){0, 0, GetScreenWidth(), GetScreenHeight()});
-    if(!Global.MouseInFocus){
-        Global.MousePosition = {0,0};
-        //if it isnt in the game area, show the cursor
-        if(IsCursorHidden())
-            ShowCursor();
+    G.MouseInFocus = CheckCollisionPointRec(GetMousePosition(), (Rectangle){0, 0, GetScreenWidth(), GetScreenHeight()});
+    if(!G.MouseInFocus){
+        G.MousePosition = {0,0};
     }
     else {
-        Global.MousePosition = {(GetMouseX() - Global.ZeroPoint.x) / Global.Scale, (GetMouseY() - Global.ZeroPoint.y) / Global.Scale};
-        //if it is in the game area, hide the cursor
-        if(!IsCursorHidden())
-            HideCursor();
+        G.MousePosition = {(GetMouseX() - G.ZeroPoint.x) / G.Scale, (GetMouseY() - G.ZeroPoint.y) / G.Scale};
     }
 }
 
 float Scale(float a){
     //Basic scaling function
-    return a * Global.Scale;
+    return a * G.Scale;
 }
 
 Rectangle ScaleRect(Rectangle a){
     //Scale the size and also move the rectangle depending on the offset
-    return {a.x * Global.Scale + Global.ZeroPoint.x, a.y * Global.Scale + Global.ZeroPoint.y, a.width * Global.Scale, a.height * Global.Scale};
+    return {a.x * G.Scale + G.ZeroPoint.x, a.y * G.Scale + G.ZeroPoint.y, a.width * G.Scale, a.height * G.Scale};
 }
 
 Vector2 ScaleCords(Vector2 a){
     //Scale so that the coordinates are correct for our window size and also move them based on the offset
-    return {a.x * Global.Scale + Global.ZeroPoint.x, a.y * Global.Scale + Global.ZeroPoint.y};
+    return {a.x * G.Scale + G.ZeroPoint.x, a.y * G.Scale + G.ZeroPoint.y};
 }
 
 float ScaleCordX(float a){
     //Do the same thing as the ScaleCords function but only for the x axis
-    return a * Global.Scale + Global.ZeroPoint.x;
+    return a * G.Scale + G.ZeroPoint.x;
 }
 
 float ScaleCordY(float a){
     //Do the same thing as the ScaleCords function but only for the y axis
-    return a * Global.Scale + Global.ZeroPoint.y;
+    return a * G.Scale + G.ZeroPoint.y;
 }
 
 Vector2 GetCenter(Rectangle a){
@@ -104,4 +98,23 @@ int Search(std::vector<float> arr, float x,int l,int r) {
     }
     else
         return l;
+}
+
+
+math initMath(){
+    math temp;
+    for(int i = 0; i < 360; i++){
+        temp.cos[i] = cos(i / 180.0*M_PI);
+        temp.sin[i] = sin(i / 180.0*M_PI);
+    }
+    return temp;
+}
+player initPlayer(int x, int y, int z, int a, int l){
+    player temp;
+    temp.x = x;
+    temp.y = y;
+    temp.z = z;
+    temp.a = a;
+    temp.l = l;
+    return temp;
 }
