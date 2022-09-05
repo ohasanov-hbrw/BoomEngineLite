@@ -2,8 +2,11 @@
 #include <vector>
 #include <algorithm>
 #include <utils.hpp>
+#include <globals.hpp>
 #include "raylib.h"
 #include <iostream>
+
+Globals Global;
 
 int main() {
     SetTraceLogLevel(LOG_WARNING);
@@ -11,11 +14,11 @@ int main() {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(Global.Width, Global.Height, "BoomEngine");
     SetWindowMinSize(320, 240);
-    SetTargetFPS(72);
+    SetTargetFPS(Global.FPS);
     while(!WindowShouldClose()){
         BeginDrawing();
 
-        ClearBackground(Global.Background);
+        ClearBackground(BLACK);
         EndDrawing();
     }
 
