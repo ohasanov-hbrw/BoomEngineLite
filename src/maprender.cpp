@@ -156,7 +156,7 @@ void Map::MovePlayer(){
     sector temp = sectors[P.curSector];
     
 
-    for(int s = 0; s < temp.neighbors.size(); s++){
+    /*for(int s = 0; s < temp.neighbors.size(); s++){
         if(
             //CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x - G.M.sin[P.a] * 10.0f, P.y  + G.M.cos[P.a] * 10.0f}, temp.vertex[s], temp.vertex[s + 1], &useless)// &&
             //(float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
@@ -201,7 +201,7 @@ void Map::MovePlayer(){
         }
     }
 
-    
+    */
 
     for(int s = 0; s < temp.neighbors.size(); s++){
         if(
