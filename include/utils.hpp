@@ -76,7 +76,7 @@ typedef struct{
 math initMath();
 
 typedef struct{
-    int x, y, z;
+    float x, y, z;
     int a;
     int l;
 }player; 

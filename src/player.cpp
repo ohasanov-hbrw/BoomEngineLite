@@ -13,8 +13,8 @@ void MovePlayer(){
             G.P.a -= 360;
         }
     }
-    int cX = G.M.sin[G.P.a] * 5.0f;
-    int cY = G.M.cos[G.P.a] * 5.0f;
+    float cX = G.M.sin[G.P.a] * 5.0f;
+    float cY = G.M.cos[G.P.a] * 5.0f;
     if(IsKeyDown(KEY_W)){
         G.P.x += cX;
         G.P.y += cY;

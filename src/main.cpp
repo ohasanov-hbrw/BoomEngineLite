@@ -35,9 +35,9 @@ int main() {
         GetMouse();
         BeginDrawing();
             ClearBackground(BLACK);
-            DrawText(TextFormat("X: %d", G.P.x), ScaleCordX(0), ScaleCordY(0), Scale(16), WHITE);
-            DrawText(TextFormat("Y: %d", G.P.y), ScaleCordX(0), ScaleCordY(20), Scale(16), WHITE);
-            DrawText(TextFormat("Z: %d", G.P.z), ScaleCordX(0), ScaleCordY(40), Scale(16), WHITE);
+            DrawText(TextFormat("X: %f", G.P.x), ScaleCordX(0), ScaleCordY(0), Scale(16), WHITE);
+            DrawText(TextFormat("Y: %f", G.P.y), ScaleCordX(0), ScaleCordY(20), Scale(16), WHITE);
+            DrawText(TextFormat("Z: %f", G.P.z), ScaleCordX(0), ScaleCordY(40), Scale(16), WHITE);
             DrawText(TextFormat("A: %d", G.P.a), ScaleCordX(0), ScaleCordY(60), Scale(16), WHITE);
             DrawText(TextFormat("L: %d", G.P.l), ScaleCordX(0), ScaleCordY(80), Scale(16), WHITE);
             DrawText(TextFormat("S: %f", Scale(5)), ScaleCordX(0), ScaleCordY(100), Scale(16), WHITE);
@@ -57,7 +57,7 @@ int main() {
                 }
             }
             for(int i = 0; i < map.vertex.size(); i++){
-                DrawCircleV((ScaleCords(map.vertex[i] * Vector2{10, 10}) + Vector2{G.P.x, -G.P.y}  + Vector2{320, 240}), Scale(5), RED);
+                DrawCircleV((ScaleCords(map.vertex[i] * Vector2{10, 10} + Vector2{G.P.x, -G.P.y}  + Vector2{320, 240})), Scale(5), RED);
             }
 
         EndDrawing();
