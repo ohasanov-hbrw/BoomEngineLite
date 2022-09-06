@@ -123,27 +123,27 @@ void Map::MovePlayer(){
     float cY = G.M.cos[P.a] * 0.1f;
     float ccX = 0;
     float ccY = 0;
-        if(IsKeyDown(KEY_W)){
-        P.x -= cX;
-        P.y += cY;
+    if(IsKeyDown(KEY_W)){
+        ccX -= cX;
+        ccY += cY;
     }
     if(IsKeyDown(KEY_S)){
-        P.x += cX;
-        P.y -= cY;
+        ccX += cX;
+        ccY -= cY;
     }
     if(IsKeyDown(KEY_E)){
-        P.x -= cY;
-        P.y -= cX;
+        ccX -= cY;
+        ccY -= cX;
     }
     if(IsKeyDown(KEY_Q)){
-        P.x += cY;
-        P.y += cX;
+        ccX += cY;
+        ccY += cX;
     }
     if(IsKeyDown(KEY_R)){
-        P.z += 4;
+        P.z += 1;
     }
     if(IsKeyDown(KEY_F)){
-        P.z -= 4;
+        P.z -= 1;
     }
     if(IsKeyDown(KEY_UP)){
         P.l += 2;
@@ -151,30 +151,73 @@ void Map::MovePlayer(){
     if(IsKeyDown(KEY_DOWN)){
         P.l -= 2;
     }
-    float px = P.x;
-    float py = P.y;
+
 
     sector temp = sectors[P.curSector];
-    if(P.curSector == 21){
-        std::cout << (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[2], temp.vertex[2 + 1]) << "\n";
-    }
+    
+
     for(int s = 0; s < temp.neighbors.size(); s++){
-        //std::cout << px << " " << py << " " << sectors[P.curSector].vertex[s].x << " " << sectors[P.curSector].vertex[s].y << "\n";
-        
-        /*if(boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]))
-            std::cout <<
-                temp.neighbors[s] << " " <<
-                (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << " " <<
-                sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << "\n";*/
+        if(
+            //CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x - G.M.sin[P.a] * 10.0f, P.y  + G.M.cos[P.a] * 10.0f}, temp.vertex[s], temp.vertex[s + 1], &useless)// &&
+            //(float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
+            true
+        ){
+            float hole_low  = temp.neighbors[s] < 0 ?  9e9 : std::max(temp.floor, sectors[temp.neighbors[s]].floor);
+            float hole_high = temp.neighbors[s] < 0 ? -9e9 : std::min(temp.ceiling, sectors[temp.neighbors[s]].ceiling);
+            //std::cout << hole_low << " " << hole_high << "\n";
+            if(hole_high < P.z+10 || hole_low  > P.z+2)
+            {
+                
+                //float xd = temp.vertex[s+1].x - temp.vertex[s].x;
+                //float yd = temp.vertex[s+1].y - temp.vertex[s].y;
+                //xd = xd * (ccX*xd + yd*ccY) / (xd*xd + yd*yd);
+                //yd = yd * (ccX*xd + yd*ccY) / (xd*xd + yd*yd);
+                //ccX = xd;
+                //ccY = yd;
+                //ccX = 0;
+                //ccY = 0;
+                float x1 = temp.vertex[s].x;
+                float x2 = temp.vertex[s+1].x;
+                float y1 = temp.vertex[s].y;
+                float y2 = temp.vertex[s+1].y;
+                float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
+                float x4 = P.x + ccX- k * (y2-y1);
+                float y4 = P.y + ccY+ k * (x2-x1);
+                useless2 = Vector2{x4, y4};
+                if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
+                    std::cout << "amogus\n";
+                    float dx = ccX;
+                    float dy = ccY;
+                    float xd = temp.vertex[s+1].x - temp.vertex[s].x;
+                    float yd = temp.vertex[s+1].y - temp.vertex[s].y;
+                    dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+                    dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+                    ccX = dx;
+                    ccY = dy;
+                    
+                }
+
+            }
+        }
+    }
+
+    
+
+    for(int s = 0; s < temp.neighbors.size(); s++){
         if(
             temp.neighbors[s] >= 0 &&
-            boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) && 
+            /*boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1])*/
+            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1], &useless) && 
             sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0
         ){
             P.curSector = temp.neighbors[s];
+            P.z = sectors[temp.neighbors[s]].floor;
             break;
         }
     }
+
+
+
 
     P.x += ccX;
     P.y += ccY;

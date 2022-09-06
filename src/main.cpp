@@ -69,7 +69,7 @@ int main() {
                     }
                 }
             }
-
+            DrawCircleV((ScaleCords((map.useless2 + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240})), Scale(3), BLACK);
         EndDrawing();
     }
 

@@ -111,7 +111,7 @@ math initMath(){
 }
 
 float vectorCrossProduct(Vector2 a, Vector2 b){
-    return ((a.x)*(b.y) - (b.x)*(a.y));
+    return (float)((a.x)*(b.y) - (b.x)*(a.y));
 }
 
 bool rangesOverlap(float a0, float a1, float b0, float b1){
@@ -125,6 +125,6 @@ bool boxesOverlap(Vector2 a, Vector2 b, Vector2 c, Vector2 d){
     return CheckCollisionRecs(temp1, temp2);
 }
 
-int sideLine(Vector2 p, Vector2 a, Vector2 b){
-    return vectorCrossProduct(b - a, p - a);
+float sideLine(Vector2 p, Vector2 a, Vector2 b){
+    return (float)vectorCrossProduct(b - a, p - a);
 }

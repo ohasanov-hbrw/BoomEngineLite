@@ -19,6 +19,8 @@ class Map{
             int l;
             int curSector = -1;
         }; 
+        Vector2 useless = {0,0};
+        Vector2 useless2 = {0,0};
         std::vector<Vector2> vertex;
         std::vector<sector> sectors;
         void LoadData();
