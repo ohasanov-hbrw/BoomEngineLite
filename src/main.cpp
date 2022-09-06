@@ -4,10 +4,13 @@
 #include <utils.hpp>
 #include <player.hpp>
 #include <globals.hpp>
+#include <maprender.hpp>
 #include "raylib.h"
 #include <iostream>
 
 Globals G;
+
+Map map;
 
 int main() {
     SetTraceLogLevel(LOG_WARNING);
