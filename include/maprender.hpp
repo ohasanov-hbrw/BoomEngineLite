@@ -1,5 +1,8 @@
 #include <utils.hpp>
 #include <globals.hpp>
+#include <string.h>
+#include <fstream>
+#include <iostream>
 
 class Map{
     public:

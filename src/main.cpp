@@ -27,6 +27,8 @@ int main() {
     G.P.z = 0;
     G.P.l = 0;
 
+    map.LoadData();
+
     while(!WindowShouldClose()){
         MovePlayer();
         GetScale();
