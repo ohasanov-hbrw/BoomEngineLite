@@ -155,13 +155,17 @@ void Map::MovePlayer(){
     float py = P.y;
 
     sector temp = sectors[P.curSector];
+    if(P.curSector == 21){
+        std::cout << (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[2], temp.vertex[2 + 1]) << "\n";
+    }
     for(int s = 0; s < temp.neighbors.size(); s++){
         //std::cout << px << " " << py << " " << sectors[P.curSector].vertex[s].x << " " << sectors[P.curSector].vertex[s].y << "\n";
-        if(boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]))
+        
+        /*if(boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]))
             std::cout <<
                 temp.neighbors[s] << " " <<
                 (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << " " <<
-                sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << "\n";
+                sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << "\n";*/
         if(
             temp.neighbors[s] >= 0 &&
             boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) && 

@@ -119,7 +119,10 @@ bool rangesOverlap(float a0, float a1, float b0, float b1){
 }
 
 bool boxesOverlap(Vector2 a, Vector2 b, Vector2 c, Vector2 d){
-    return (rangesOverlap(a.x,b.x,c.x,d.x) && rangesOverlap(a.y,b.y,c.y,d.y));
+    //return (rangesOverlap(a.x,b.x,c.x,d.x) && rangesOverlap(a.y,b.y,c.y,d.y));
+    Rectangle temp1 = Rectangle{a.x, a.y, b.x, b.y};
+    Rectangle temp2 = Rectangle{c.x, c.y, d.x, d.y};
+    return CheckCollisionRecs(temp1, temp2);
 }
 
 int sideLine(Vector2 p, Vector2 a, Vector2 b){
