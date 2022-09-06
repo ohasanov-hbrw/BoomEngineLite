@@ -109,12 +109,19 @@ math initMath(){
     }
     return temp;
 }
-player initPlayer(int x, int y, int z, int a, int l){
-    player temp;
-    temp.x = x;
-    temp.y = y;
-    temp.z = z;
-    temp.a = a;
-    temp.l = l;
-    return temp;
+
+float vectorCrossProduct(Vector2 a, Vector2 b){
+    return ((a.x)*(b.y) - (b.x)*(a.y));
+}
+
+bool rangesOverlap(float a0, float a1, float b0, float b1){
+    return (std::min(a0,a1) <= std::max(b0,b1) && std::min(b0,b1) <= std::max(a0,a1));
+}
+
+bool boxesOverlap(Vector2 a, Vector2 b, Vector2 c, Vector2 d){
+    return (rangesOverlap(a.x,b.x,c.x,d.x) && rangesOverlap(a.y,b.y,c.y,d.y));
+}
+
+int sideLine(Vector2 p, Vector2 a, Vector2 b){
+    return vectorCrossProduct(b - a, p - a);
 }

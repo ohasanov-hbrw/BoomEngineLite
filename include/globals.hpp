@@ -19,7 +19,6 @@ struct Globals {
     bool MouseInFocus = false;
     Vector2 MousePosition;
     math M;
-    player P;
     Globals() = default;
 };
 

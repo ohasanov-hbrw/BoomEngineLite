@@ -12,6 +12,9 @@
     #include "raymath.h"
 //}
 
+
+
+
 void GetScale();
 //Get the absolute Mouse position
 void GetMouse(); //No Tom, you will never be able to catch Jerry :'(
@@ -75,10 +78,7 @@ typedef struct{
 
 math initMath();
 
-typedef struct{
-    float x, y, z;
-    int a;
-    int l;
-}player; 
-
-player initPlayer(int, int, int, int, int);
+float vectorCrossProduct(Vector2, Vector2);
+bool rangesOverlap(float, float, float, float);
+bool boxesOverlap(Vector2, Vector2, Vector2, Vector2);
+int sideLine(Vector2, Vector2, Vector2);

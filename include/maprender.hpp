@@ -13,9 +13,19 @@ class Map{
             std::vector<int> neighbors;
             std::vector<Vector2> vertex;
         };
+        struct player{
+            float x, y, z;
+            int a;
+            int l;
+            int curSector = -1;
+        }; 
         std::vector<Vector2> vertex;
         std::vector<sector> sectors;
         void LoadData();
         void UnloadData();
+        void MovePlayer();
+        void UpdatePlayer();
+        player P;
+        player initPlayer(int, int, int, int, int);
     private:
 };
