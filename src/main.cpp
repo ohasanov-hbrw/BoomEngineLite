@@ -42,22 +42,32 @@ int main() {
             DrawText(TextFormat("A: %d", map.P.a), ScaleCordX(0), ScaleCordY(60), Scale(16), WHITE);
             DrawText(TextFormat("L: %d", map.P.l), ScaleCordX(0), ScaleCordY(80), Scale(16), WHITE);
             DrawText(TextFormat("S: %d", map.P.curSector), ScaleCordX(0), ScaleCordY(100), Scale(16), WHITE);
-            DrawCircleV(ScaleCords(Vector2{map.P.x * 20, map.P.y * 20}), Scale(5), GREEN);
+            DrawCircleV(ScaleCords(Vector2{320, 240}), Scale(5), GREEN);
+            DrawLineEx(ScaleCords(Vector2{320, 240}), ScaleCords(Vector2{(320 + 7 * G.M.cos[(map.P.a + 90) % 360]), (240 + 7 * G.M.sin[(map.P.a + 90) % 360])}), Scale(3), BLUE);
             
             Color colorPicker[8] = {RED, GREEN, BLUE, WHITE, YELLOW, MAGENTA, GRAY, PURPLE};
             for(int i = 0; i < map.sectors.size(); i++){
                 for(int j = 1; j < map.sectors[i].vertex.size(); j++){
-                    if(i == map.P.curSector)
+                    if(i == map.P.curSector){
                         DrawLineEx(
-                            ScaleCords((map.sectors[i].vertex[j - 1]) * Vector2{20, 20}),
-                            ScaleCords((map.sectors[i].vertex[j]) * Vector2{20, 20}),
+                            ScaleCords((map.sectors[i].vertex[j - 1] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240}),
+                            ScaleCords((map.sectors[i].vertex[j] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240}),
                             Scale(4),
                             colorPicker[i % 8]
                         );
+                        DrawCircleV((ScaleCords((map.sectors[i].vertex[j] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240})), Scale(3), RED);
+                    }
+                    else if(map.sectors[map.P.curSector].floor == map.sectors[i].floor){
+                        DrawLineEx(
+                            ScaleCords((map.sectors[i].vertex[j - 1] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240}),
+                            ScaleCords((map.sectors[i].vertex[j] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240}),
+                            Scale
+                            (4),
+                            Fade(WHITE, 0.2f)
+                        );
+                        DrawCircleV((ScaleCords((map.sectors[i].vertex[j] + Vector2{-map.P.x, -map.P.y}) * Vector2{30, 30} + Vector2{320, 240})), Scale(3), Fade(WHITE, 0.2f));
+                    }
                 }
-            }
-            for(int i = 0; i < map.vertex.size(); i++){
-                DrawCircleV(ScaleCords((map.vertex[i]) * Vector2{20, 20}), Scale(5), RED);
             }
 
         EndDrawing();

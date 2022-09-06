@@ -31,7 +31,7 @@ void Map::LoadData(){
                     }
                 }
                 for(int i = 1; i < cords.size(); i++){
-                    vertex.push_back(Vector2{cords[0], cords[i]});
+                    vertex.push_back(Vector2{cords[i], cords[0]});
                 }
             }
             if(line[0] == 's'){
@@ -107,7 +107,7 @@ void Map::UnloadData(){
 }
 
 void Map::MovePlayer(){
-    /*if(IsKeyDown(KEY_A)){
+    if(IsKeyDown(KEY_A)){
         P.a -= 3;
         if(P.a < 0){
             P.a += 360;
@@ -118,54 +118,56 @@ void Map::MovePlayer(){
         if(P.a > 359){
             P.a -= 360;
         }
-    }*/
-    /*float cX = G.M.sin[P.a] * 0.1f;
-    float cY = G.M.cos[P.a] * 0.1f;*/
-    float cX = 0.1f;
-    float cY = 0.1f;
+    }
+    float cX = G.M.sin[P.a] * 0.1f;
+    float cY = G.M.cos[P.a] * 0.1f;
     float ccX = 0;
     float ccY = 0;
-    if(IsKeyDown(KEY_W)){
-        ccY += cY;
+        if(IsKeyDown(KEY_W)){
+        P.x -= cX;
+        P.y += cY;
     }
     if(IsKeyDown(KEY_S)){
-        ccY -= cY;
+        P.x += cX;
+        P.y -= cY;
     }
-    if(IsKeyDown(KEY_A)){
-        ccX += cX;
+    if(IsKeyDown(KEY_E)){
+        P.x -= cY;
+        P.y -= cX;
     }
-    if(IsKeyDown(KEY_D)){
-        ccX -= cX;
+    if(IsKeyDown(KEY_Q)){
+        P.x += cY;
+        P.y += cX;
     }
-    /*if(IsKeyDown(KEY_R)){
+    if(IsKeyDown(KEY_R)){
         P.z += 4;
     }
     if(IsKeyDown(KEY_F)){
         P.z -= 4;
     }
     if(IsKeyDown(KEY_UP)){
-        P.l += 3;
+        P.l += 2;
     }
     if(IsKeyDown(KEY_DOWN)){
-        P.l -= 3;
-    }*/
+        P.l -= 2;
+    }
     float px = P.x;
     float py = P.y;
 
     sector temp = sectors[P.curSector];
-    for(int s = 0; s < sectors[P.curSector].neighbors.size(); s++){
+    for(int s = 0; s < temp.neighbors.size(); s++){
         //std::cout << px << " " << py << " " << sectors[P.curSector].vertex[s].x << " " << sectors[P.curSector].vertex[s].y << "\n";
-        if(boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, sectors[P.curSector].vertex[s], sectors[P.curSector].vertex[s + 1]))
+        if(boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]))
             std::cout <<
-                sectors[P.curSector].neighbors[s] << " " <<
-                (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, sectors[P.curSector].vertex[s], sectors[P.curSector].vertex[s + 1]) << " " <<
-                sideLine(Vector2{P.x + ccX, P.y  + ccY}, sectors[P.curSector].vertex[s], sectors[P.curSector].vertex[s + 1]) << "\n";
+                temp.neighbors[s] << " " <<
+                (int)boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << " " <<
+                sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) << "\n";
         if(
-            sectors[P.curSector].neighbors[s] >= 0 &&
-            boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, sectors[P.curSector].vertex[s], sectors[P.curSector].vertex[s + 1]) && 
-            sideLine(Vector2{P.x + ccX, P.y  + ccY}, sectors[P.curSector].vertex[s], sectors[P.curSector].vertex[s + 1]) < 0
+            temp.neighbors[s] >= 0 &&
+            boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) && 
+            sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0
         ){
-            P.curSector = sectors[P.curSector].neighbors[s];
+            P.curSector = temp.neighbors[s];
             break;
         }
     }
