@@ -1,5 +1,5 @@
 CC = g++
-cflags = -std=c++17 -g -O3
+cflags = -std=c++17 -g
 cflags += -Ivendor/raylib/src -Iinclude
 ldflags += -lstdc++ -Lvendor/raylib/src -lraylib -lpthread -ldl
 name = BoomEngine 

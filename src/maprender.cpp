@@ -7,6 +7,7 @@ Map::Map(){
 void Map::LoadData(){
     std::ifstream ifs("resources/map.txt");
 	std::string line;
+    useless = (Vector2*)malloc(sizeof(Vector2));
 	if (ifs.is_open()){
 		while(std::getline(ifs, line)){
             if(line[0] == 'v'){
@@ -124,20 +125,20 @@ void Map::MovePlayer(){
     float ccX = 0;
     float ccY = 0;
     if(IsKeyDown(KEY_W)){
-        ccX -= cX;
-        ccY += cY;
+        ccX = -cX;
+        ccY = cY;
     }
     if(IsKeyDown(KEY_S)){
-        ccX += cX;
-        ccY -= cY;
+        ccX = cX;
+        ccY = -cY;
     }
     if(IsKeyDown(KEY_E)){
-        ccX -= cY;
-        ccY -= cX;
+        ccX = -cY;
+        ccY = -cX;
     }
     if(IsKeyDown(KEY_Q)){
-        ccX += cY;
-        ccY += cX;
+        ccX = cY;
+        ccY = cX;
     }
     if(IsKeyDown(KEY_R)){
         P.z += 1;
@@ -160,12 +161,15 @@ void Map::MovePlayer(){
         float x2 = temp.vertex[s+1].x;
         float y1 = temp.vertex[s].y;
         float y2 = temp.vertex[s+1].y;
-        float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
-        float x4 = P.x + ccX- k * (y2-y1);
-        float y4 = P.y + ccY+ k * (x2-x1);
-        useless2 = Vector2{x4, y4};
+        
+        float k1 = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
+        float x41 = P.x + ccX- k1 * (y2-y1);
+        float y41 = P.y + ccY+ k1 * (x2-x1);
+        //useless2 = Vector2{x4, y4};
+
         if(
-            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX * 10.0f, P.y  + ccY * 10.0f}, temp.vertex[s], temp.vertex[s + 1], &useless)// &&
+            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{x41, y41}, temp.vertex[s], temp.vertex[s + 1], useless)// &&
+            //CheckCollisionPointCircle(*useless, Vector2{P.x + ccX, P.y  + ccY}, 0.12f)
             //(float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
             //true
         ){
@@ -174,33 +178,47 @@ void Map::MovePlayer(){
             //std::cout << hole_low << " " << hole_high << "\n";
             if(hole_high < P.z+10 || hole_low  > P.z+2)
             {
-                if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
-                    std::cout << "amogus\n";
+                //if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
+                    //std::cout << "amogus\n";
                     float dx = ccX;
                     float dy = ccY;
                     float xd = temp.vertex[s+1].x - temp.vertex[s].x;
                     float yd = temp.vertex[s+1].y - temp.vertex[s].y;
                     dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
                     dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-                    ccX = dx;
-                    ccY = dy;
                     
-                }
+                    float m_A = temp.vertex[s].y - temp.vertex[s+1].y;
+                    float m_B = temp.vertex[s+1].x - temp.vertex[s].x;
+                    float m_C = temp.vertex[s].x * temp.vertex[s+1].y - temp.vertex[s+1].x * temp.vertex[s].y;
+
+                    float dist = std::abs(m_A * (P.x + ccX) + m_B * (P.y + ccY) + m_C) * Q_rsqrt(m_A * m_A + m_B * m_B);
+                    
+                    float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
+                    float x4 = P.x + ccX- k * (y2-y1);
+                    float y4 = P.y + ccY+ k * (x2-x1);
+                    useless2 = Vector2{x4, y4};
+
+                    std::cout << m_C << " " << m_A  << " " << m_B << "\n";
+                    //ccX = dx;
+                    //ccY = dy;
+
+                    if(dist < 0.9f){
+                        
+                        //ccX += (0.06f / dist) * ((P.x) - x4);
+                        //ccY += (0.06f / dist) * ((P.y) - y4);
+                        //ccX = 0;
+                        //ccY = 0;
+                        std::cout << "amog" << " " << ccX  << " " << ccY << "\n";
+                    }
+
+                    /*if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
+                        ccX = 0;
+                        ccY = 0;
+                    }*/
+                //}
 
             }
         }
-        /*if(CheckCollisionPointCircle(temp.vertex[s], Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
-            std::cout << "amogus\n";
-            float dx = ccX;
-            float dy = ccY;
-            float xd = temp.vertex[s+1].x - temp.vertex[s].x;
-            float yd = temp.vertex[s+1].y - temp.vertex[s].y;
-            dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-            dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-            ccX = 0;
-            ccY = 0;
-            
-        }*/
 
     }
 
@@ -210,7 +228,7 @@ void Map::MovePlayer(){
         if(
             temp.neighbors[s] >= 0 &&
             /*boxesOverlap(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1])*/
-            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1], &useless) && 
+            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1], useless) && 
             sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0
         ){
             P.curSector = temp.neighbors[s];

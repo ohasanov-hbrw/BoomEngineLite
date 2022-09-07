@@ -82,3 +82,4 @@ float vectorCrossProduct(Vector2, Vector2);
 bool rangesOverlap(float, float, float, float);
 bool boxesOverlap(Vector2, Vector2, Vector2, Vector2);
 float sideLine(Vector2, Vector2, Vector2);
+float Q_rsqrt(float);
