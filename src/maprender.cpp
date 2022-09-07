@@ -168,9 +168,9 @@ void Map::MovePlayer(){
         //useless2 = Vector2{x4, y4};
 
         if(
-            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{x41, y41}, temp.vertex[s], temp.vertex[s + 1], useless)// &&
+            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX, P.y + ccY}, temp.vertex[s], temp.vertex[s + 1], useless) &&
             //CheckCollisionPointCircle(*useless, Vector2{P.x + ccX, P.y  + ccY}, 0.12f)
-            //(float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
+            (float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
             //true
         ){
             float hole_low  = temp.neighbors[s] < 0 ?  9e9 : std::max(temp.floor, sectors[temp.neighbors[s]].floor);
@@ -187,7 +187,7 @@ void Map::MovePlayer(){
                     dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
                     dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
                     
-                    float m_A = temp.vertex[s].y - temp.vertex[s+1].y;
+                    /*float m_A = temp.vertex[s].y - temp.vertex[s+1].y;
                     float m_B = temp.vertex[s+1].x - temp.vertex[s].x;
                     float m_C = temp.vertex[s].x * temp.vertex[s+1].y - temp.vertex[s+1].x * temp.vertex[s].y;
 
@@ -196,20 +196,20 @@ void Map::MovePlayer(){
                     float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
                     float x4 = P.x + ccX- k * (y2-y1);
                     float y4 = P.y + ccY+ k * (x2-x1);
-                    useless2 = Vector2{x4, y4};
+                    useless2 = Vector2{x4, y4};*/
 
-                    std::cout << m_C << " " << m_A  << " " << m_B << "\n";
-                    //ccX = dx;
-                    //ccY = dy;
+                    //std::cout << m_C << " " << m_A  << " " << m_B << "\n";
+                    ccX = dx;
+                    ccY = dy;
 
-                    if(dist < 0.9f){
+                    /*if(dist < 0.9f){
                         
                         //ccX += (0.06f / dist) * ((P.x) - x4);
                         //ccY += (0.06f / dist) * ((P.y) - y4);
                         //ccX = 0;
                         //ccY = 0;
-                        std::cout << "amog" << " " << ccX  << " " << ccY << "\n";
-                    }
+                        //std::cout << "amog" << " " << ccX  << " " << ccY << "\n";
+                    }*/
 
                     /*if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
                         ccX = 0;
