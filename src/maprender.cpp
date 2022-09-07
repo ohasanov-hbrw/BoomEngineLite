@@ -154,36 +154,26 @@ void Map::MovePlayer(){
 
 
     sector temp = sectors[P.curSector];
-    
 
-    /*for(int s = 0; s < temp.neighbors.size(); s++){
+    for(int s = 0; s < temp.neighbors.size(); s++){
+        float x1 = temp.vertex[s].x;
+        float x2 = temp.vertex[s+1].x;
+        float y1 = temp.vertex[s].y;
+        float y2 = temp.vertex[s+1].y;
+        float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
+        float x4 = P.x + ccX- k * (y2-y1);
+        float y4 = P.y + ccY+ k * (x2-x1);
+        useless2 = Vector2{x4, y4};
         if(
-            //CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x - G.M.sin[P.a] * 10.0f, P.y  + G.M.cos[P.a] * 10.0f}, temp.vertex[s], temp.vertex[s + 1], &useless)// &&
+            CheckCollisionLines(Vector2{P.x, P.y}, Vector2{P.x + ccX * 10.0f, P.y  + ccY * 10.0f}, temp.vertex[s], temp.vertex[s + 1], &useless)// &&
             //(float)sideLine(Vector2{P.x + ccX, P.y  + ccY}, temp.vertex[s], temp.vertex[s + 1]) < 0.0f
-            true
+            //true
         ){
             float hole_low  = temp.neighbors[s] < 0 ?  9e9 : std::max(temp.floor, sectors[temp.neighbors[s]].floor);
             float hole_high = temp.neighbors[s] < 0 ? -9e9 : std::min(temp.ceiling, sectors[temp.neighbors[s]].ceiling);
             //std::cout << hole_low << " " << hole_high << "\n";
             if(hole_high < P.z+10 || hole_low  > P.z+2)
             {
-                
-                //float xd = temp.vertex[s+1].x - temp.vertex[s].x;
-                //float yd = temp.vertex[s+1].y - temp.vertex[s].y;
-                //xd = xd * (ccX*xd + yd*ccY) / (xd*xd + yd*yd);
-                //yd = yd * (ccX*xd + yd*ccY) / (xd*xd + yd*yd);
-                //ccX = xd;
-                //ccY = yd;
-                //ccX = 0;
-                //ccY = 0;
-                float x1 = temp.vertex[s].x;
-                float x2 = temp.vertex[s+1].x;
-                float y1 = temp.vertex[s].y;
-                float y2 = temp.vertex[s+1].y;
-                float k = ((y2-y1) * (P.x + ccX-x1) - (x2-x1) * (P.y + ccY-y1)) / (std::pow((y2-y1),2) + std::pow((x2-x1),2));
-                float x4 = P.x + ccX- k * (y2-y1);
-                float y4 = P.y + ccY+ k * (x2-x1);
-                useless2 = Vector2{x4, y4};
                 if(CheckCollisionPointCircle(useless2, Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
                     std::cout << "amogus\n";
                     float dx = ccX;
@@ -199,9 +189,22 @@ void Map::MovePlayer(){
 
             }
         }
+        /*if(CheckCollisionPointCircle(temp.vertex[s], Vector2{P.x + ccX, P.y  + ccY}, 0.2f)){
+            std::cout << "amogus\n";
+            float dx = ccX;
+            float dy = ccY;
+            float xd = temp.vertex[s+1].x - temp.vertex[s].x;
+            float yd = temp.vertex[s+1].y - temp.vertex[s].y;
+            dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+            dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+            ccX = 0;
+            ccY = 0;
+            
+        }*/
+
     }
 
-    */
+    
 
     for(int s = 0; s < temp.neighbors.size(); s++){
         if(
