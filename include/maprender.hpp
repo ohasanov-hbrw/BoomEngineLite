@@ -27,6 +27,7 @@ class Map{
         void UnloadData();
         void MovePlayer();
         void UpdatePlayer();
+        void RenderScreen();
         player P;
         player initPlayer(int, int, int, int, int);
     private:

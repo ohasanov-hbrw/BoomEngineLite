@@ -248,3 +248,6 @@ Map::player Map::initPlayer(int x, int y, int z, int a, int l){
     temp.l = l;
     return temp;
 }
+void Map::RenderScreen(){
+    
+}
